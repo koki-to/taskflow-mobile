@@ -1,0 +1,26 @@
+{
+    // IntelliSense を使用して利用可能な属性を学べます。
+    // 既存の属性の説明をホバーして表示します。
+    // 詳細情報は次を確認してください: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+      {
+      "name": "TaskFlow（開発環境）",
+      "request": "launch",
+      "type": "dart",
+      "args": [
+        "--dart-define=API_BASE_URL=http://localhost:3001",
+        "--dart-define=ENVIRONMENT=development"
+      ]
+    },
+    {
+      "name": "TaskFlow（本番環境）",
+      "request": "launch",
+      "type": "dart",
+      "args": [
+        "--dart-define=API_BASE_URL=https://taskflow-backend-jc0o.onrender.com",
+        "--dart-define=ENVIRONMENT=production"
+      ]
+    }
+    ]
+}

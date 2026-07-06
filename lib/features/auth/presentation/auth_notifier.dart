@@ -55,6 +55,38 @@ class AuthNotifier extends _$AuthNotifier {
     }
   }
 
+  // ── 新規登録 ───────────────────────────────────────────────
+  Future<void> register({
+    required String email,
+    required String password,
+    String? name,
+  }) async {
+    state = state.copyWith(
+      isLoading: true,
+      errorMessage: null,
+    );
+
+    try {
+      final user = await ref.read(authServiceProvider).register(
+            email: email,
+            password: password,
+            name: name,
+          );
+
+      state = state.copyWith(
+        isLoading: false,
+        isAuthenticated: true,
+        user: user,
+        errorMessage: null,
+      );
+    } on AuthException catch (e) {
+      state = state.copyWith(
+        isLoading: false,
+        errorMessage: e.message,
+      );
+    }
+  }
+
   // ── ログアウト ─────────────────────────────────────────────
   Future<void> logout() async {
     state = state.copyWith(isLoading: true);
@@ -76,6 +108,10 @@ class AuthNotifier extends _$AuthNotifier {
   // → アプリ起動時にmain.dartから呼ぶ（Day3で追加）
   Future<void> checkAuthStatus() async {
     final hasToken = await ref.read(authServiceProvider).hasValidToken();
+    // ref.mounted で Provider が生きているか確認する
+    // → 非同期処理の完了前に Provider が破棄されていた場合
+    //   state への書き込みを防ぐ
+    if (!ref.mounted) return;
 
     state = state.copyWith(
       isAuthenticated: hasToken,
