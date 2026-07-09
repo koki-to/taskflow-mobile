@@ -19,6 +19,7 @@ abstract class AuthState with _$AuthState {
     // API呼び出し中かどうか
     // → trueの間はボタンを無効化してローディングを表示する
     @Default(false) bool isLoading,
+    @Default(false) bool isInitialized,
 
     // エラーメッセージ
     // → nullのときはエラーなし

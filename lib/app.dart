@@ -8,10 +8,10 @@ class App extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // appRouterProvider を watch する
-    // → authNotifierProvider の isAuthenticated が変化すると
-    //   GoRouterが再生成されてredirectが再実行される
-    // → これがないとログイン・ログアウトで画面遷移しない
+    // ref.watch ではなく ref.read を使う
+    // → GoRouter を1回だけ生成して保持する
+    // → ref.watch を使うと authProvider の変化で
+    //   GoRouter が再生成されてスプラッシュに戻る
     final router = ref.watch(appRouterProvider);
 
     return MaterialApp.router(

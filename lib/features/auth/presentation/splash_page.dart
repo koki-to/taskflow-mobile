@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:taskflow_mobile/core/router/app_router.dart';
 import 'auth_notifier.dart';
 
 // 起動時に認証状態を確認する画面
@@ -33,20 +31,14 @@ class _SplashPageState extends ConsumerState<SplashPage> {
     // → 画面が離脱されていたら処理をしない
     if (!mounted) return;
 
+    debugPrint('=== checkAuthStatus 開始 ===');
+
+    // checkAuthStatus を実行する
+    // → 完了後の画面遷移は app.dart の ref.listen が処理する
+    // → ここで context.go() を呼ばない
+    //   → SplashPage は認証確認だけを担当する
+    //   → 画面遷移の責務は app.dart に分離する
     await ref.read(authProvider.notifier).checkAuthStatus();
-
-    // checkAuthStatus完了後に手動で遷移する
-    // → GoRouterのredirectだけに頼ると
-    //   タイミングによって画面が切り替わらないことがある
-    if (!mounted) return;
-
-    final isAuthenticated = ref.read(authProvider).isAuthenticated;
-
-    if (isAuthenticated) {
-      context.go(AppRoutes.kanban);
-    } else {
-      context.go(AppRoutes.login);
-    }
   }
 
   @override

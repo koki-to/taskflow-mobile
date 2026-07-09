@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -35,10 +36,13 @@ class TokenStorage {
     required String accessToken,
     required String refreshToken,
   }) async {
+    debugPrint('=== saveTokens called ===');
+    debugPrint('accessToken: $accessToken');
     await Future.wait([
       _storage.write(key: _accessTokenKey, value: accessToken),
       _storage.write(key: _refreshTokenKey, value: refreshToken),
     ]);
+    debugPrint('=== saveTokens done ===');
   }
 
   // アクセストークンを取得する

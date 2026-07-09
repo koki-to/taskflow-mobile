@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:taskflow_mobile/core/exceptions/auth_exception.dart';
 import '../domain/auth_state.dart';
@@ -13,11 +14,26 @@ part 'auth_notifier.g.dart';
 // → Serviceにビジネスロジックを任せることで
 //   NotifierはisLoading・errorMessageなどの
 //   UI状態の管理だけに集中できる
-@riverpod
-class AuthNotifier extends _$AuthNotifier {
+
+// AuthNotifier に Listenable を実装する
+//
+// なぜ Listenable を実装するか：
+// → GoRouter の refreshListenable は Listenable を要求する
+// → AuthNotifier を直接渡せるので
+//   余分なクラスを作る必要がない
+// → 状態が変化したときに notifyListeners() を呼ぶことで
+//   GoRouter が自動で redirect を再実行する
+@Riverpod(keepAlive: true)
+class AuthNotifier extends _$AuthNotifier with ChangeNotifier {
   @override
   AuthState build() {
     return AuthState.initial();
+  }
+
+  @override
+  set state(AuthState newState) {
+    super.state = newState;
+    notifyListeners();
   }
 
   // ── ログイン ───────────────────────────────────────────────
@@ -107,7 +123,13 @@ class AuthNotifier extends _$AuthNotifier {
   // ── 自動ログイン確認 ────────────────────────────────────────
   // → アプリ起動時にmain.dartから呼ぶ（Day3で追加）
   Future<void> checkAuthStatus() async {
+    debugPrint('=== checkAuthStatus 内部開始 ===');
+
     final hasToken = await ref.read(authServiceProvider).hasValidToken();
+
+    debugPrint('=== hasToken: $hasToken ===');
+    debugPrint('=== ref.mounted: ${ref.mounted} ===');
+
     // ref.mounted で Provider が生きているか確認する
     // → 非同期処理の完了前に Provider が破棄されていた場合
     //   state への書き込みを防ぐ
@@ -115,6 +137,9 @@ class AuthNotifier extends _$AuthNotifier {
 
     state = state.copyWith(
       isAuthenticated: hasToken,
+      isInitialized: true,
     );
+
+    debugPrint('=== state更新後 isInitialized: ${state.isInitialized} ===');
   }
 }

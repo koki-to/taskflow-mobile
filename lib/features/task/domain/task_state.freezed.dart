@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
-part of 'auth_state.dart';
+part of 'task_state.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -13,120 +13,99 @@ part of 'auth_state.dart';
 T _$identity<T>(T value) => value;
 
 /// @nodoc
-mixin _$AuthState {
-  bool get isAuthenticated;
+mixin _$TaskState {
+  List<Task> get tasks;
   bool get isLoading;
-  bool get isInitialized;
   String? get errorMessage;
-  User? get user;
+  bool get isMutating;
 
-  /// Create a copy of AuthState
+  /// Create a copy of TaskState
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @pragma('vm:prefer-inline')
-  $AuthStateCopyWith<AuthState> get copyWith =>
-      _$AuthStateCopyWithImpl<AuthState>(this as AuthState, _$identity);
+  $TaskStateCopyWith<TaskState> get copyWith =>
+      _$TaskStateCopyWithImpl<TaskState>(this as TaskState, _$identity);
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is AuthState &&
-            (identical(other.isAuthenticated, isAuthenticated) ||
-                other.isAuthenticated == isAuthenticated) &&
+            other is TaskState &&
+            const DeepCollectionEquality().equals(other.tasks, tasks) &&
             (identical(other.isLoading, isLoading) ||
                 other.isLoading == isLoading) &&
-            (identical(other.isInitialized, isInitialized) ||
-                other.isInitialized == isInitialized) &&
             (identical(other.errorMessage, errorMessage) ||
                 other.errorMessage == errorMessage) &&
-            (identical(other.user, user) || other.user == user));
+            (identical(other.isMutating, isMutating) ||
+                other.isMutating == isMutating));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, isAuthenticated, isLoading,
-      isInitialized, errorMessage, user);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(tasks),
+      isLoading,
+      errorMessage,
+      isMutating);
 
   @override
   String toString() {
-    return 'AuthState(isAuthenticated: $isAuthenticated, isLoading: $isLoading, isInitialized: $isInitialized, errorMessage: $errorMessage, user: $user)';
+    return 'TaskState(tasks: $tasks, isLoading: $isLoading, errorMessage: $errorMessage, isMutating: $isMutating)';
   }
 }
 
 /// @nodoc
-abstract mixin class $AuthStateCopyWith<$Res> {
-  factory $AuthStateCopyWith(AuthState value, $Res Function(AuthState) _then) =
-      _$AuthStateCopyWithImpl;
+abstract mixin class $TaskStateCopyWith<$Res> {
+  factory $TaskStateCopyWith(TaskState value, $Res Function(TaskState) _then) =
+      _$TaskStateCopyWithImpl;
   @useResult
   $Res call(
-      {bool isAuthenticated,
+      {List<Task> tasks,
       bool isLoading,
-      bool isInitialized,
       String? errorMessage,
-      User? user});
-
-  $UserCopyWith<$Res>? get user;
+      bool isMutating});
 }
 
 /// @nodoc
-class _$AuthStateCopyWithImpl<$Res> implements $AuthStateCopyWith<$Res> {
-  _$AuthStateCopyWithImpl(this._self, this._then);
+class _$TaskStateCopyWithImpl<$Res> implements $TaskStateCopyWith<$Res> {
+  _$TaskStateCopyWithImpl(this._self, this._then);
 
-  final AuthState _self;
-  final $Res Function(AuthState) _then;
+  final TaskState _self;
+  final $Res Function(TaskState) _then;
 
-  /// Create a copy of AuthState
+  /// Create a copy of TaskState
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? isAuthenticated = null,
+    Object? tasks = null,
     Object? isLoading = null,
-    Object? isInitialized = null,
     Object? errorMessage = freezed,
-    Object? user = freezed,
+    Object? isMutating = null,
   }) {
     return _then(_self.copyWith(
-      isAuthenticated: null == isAuthenticated
-          ? _self.isAuthenticated
-          : isAuthenticated // ignore: cast_nullable_to_non_nullable
-              as bool,
+      tasks: null == tasks
+          ? _self.tasks
+          : tasks // ignore: cast_nullable_to_non_nullable
+              as List<Task>,
       isLoading: null == isLoading
           ? _self.isLoading
           : isLoading // ignore: cast_nullable_to_non_nullable
-              as bool,
-      isInitialized: null == isInitialized
-          ? _self.isInitialized
-          : isInitialized // ignore: cast_nullable_to_non_nullable
               as bool,
       errorMessage: freezed == errorMessage
           ? _self.errorMessage
           : errorMessage // ignore: cast_nullable_to_non_nullable
               as String?,
-      user: freezed == user
-          ? _self.user
-          : user // ignore: cast_nullable_to_non_nullable
-              as User?,
+      isMutating: null == isMutating
+          ? _self.isMutating
+          : isMutating // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
-  }
-
-  /// Create a copy of AuthState
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @pragma('vm:prefer-inline')
-  $UserCopyWith<$Res>? get user {
-    if (_self.user == null) {
-      return null;
-    }
-
-    return $UserCopyWith<$Res>(_self.user!, (value) {
-      return _then(_self.copyWith(user: value));
-    });
   }
 }
 
-/// Adds pattern-matching-related methods to [AuthState].
-extension AuthStatePatterns on AuthState {
+/// Adds pattern-matching-related methods to [TaskState].
+extension TaskStatePatterns on TaskState {
   /// A variant of `map` that fallback to returning `orElse`.
   ///
   /// It is equivalent to doing:
@@ -141,12 +120,12 @@ extension AuthStatePatterns on AuthState {
 
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>(
-    TResult Function(_AuthState value)? $default, {
+    TResult Function(_TaskState value)? $default, {
     required TResult orElse(),
   }) {
     final _that = this;
     switch (_that) {
-      case _AuthState() when $default != null:
+      case _TaskState() when $default != null:
         return $default(_that);
       case _:
         return orElse();
@@ -168,11 +147,11 @@ extension AuthStatePatterns on AuthState {
 
   @optionalTypeArgs
   TResult map<TResult extends Object?>(
-    TResult Function(_AuthState value) $default,
+    TResult Function(_TaskState value) $default,
   ) {
     final _that = this;
     switch (_that) {
-      case _AuthState():
+      case _TaskState():
         return $default(_that);
       case _:
         throw StateError('Unexpected subclass');
@@ -193,11 +172,11 @@ extension AuthStatePatterns on AuthState {
 
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>(
-    TResult? Function(_AuthState value)? $default,
+    TResult? Function(_TaskState value)? $default,
   ) {
     final _that = this;
     switch (_that) {
-      case _AuthState() when $default != null:
+      case _TaskState() when $default != null:
         return $default(_that);
       case _:
         return null;
@@ -218,16 +197,16 @@ extension AuthStatePatterns on AuthState {
 
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>(
-    TResult Function(bool isAuthenticated, bool isLoading, bool isInitialized,
-            String? errorMessage, User? user)?
+    TResult Function(List<Task> tasks, bool isLoading, String? errorMessage,
+            bool isMutating)?
         $default, {
     required TResult orElse(),
   }) {
     final _that = this;
     switch (_that) {
-      case _AuthState() when $default != null:
-        return $default(_that.isAuthenticated, _that.isLoading,
-            _that.isInitialized, _that.errorMessage, _that.user);
+      case _TaskState() when $default != null:
+        return $default(
+            _that.tasks, _that.isLoading, _that.errorMessage, _that.isMutating);
       case _:
         return orElse();
     }
@@ -248,15 +227,15 @@ extension AuthStatePatterns on AuthState {
 
   @optionalTypeArgs
   TResult when<TResult extends Object?>(
-    TResult Function(bool isAuthenticated, bool isLoading, bool isInitialized,
-            String? errorMessage, User? user)
+    TResult Function(List<Task> tasks, bool isLoading, String? errorMessage,
+            bool isMutating)
         $default,
   ) {
     final _that = this;
     switch (_that) {
-      case _AuthState():
-        return $default(_that.isAuthenticated, _that.isLoading,
-            _that.isInitialized, _that.errorMessage, _that.user);
+      case _TaskState():
+        return $default(
+            _that.tasks, _that.isLoading, _that.errorMessage, _that.isMutating);
       case _:
         throw StateError('Unexpected subclass');
     }
@@ -276,15 +255,15 @@ extension AuthStatePatterns on AuthState {
 
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>(
-    TResult? Function(bool isAuthenticated, bool isLoading, bool isInitialized,
-            String? errorMessage, User? user)?
+    TResult? Function(List<Task> tasks, bool isLoading, String? errorMessage,
+            bool isMutating)?
         $default,
   ) {
     final _that = this;
     switch (_that) {
-      case _AuthState() when $default != null:
-        return $default(_that.isAuthenticated, _that.isLoading,
-            _that.isInitialized, _that.errorMessage, _that.user);
+      case _TaskState() when $default != null:
+        return $default(
+            _that.tasks, _that.isLoading, _that.errorMessage, _that.isMutating);
       case _:
         return null;
     }
@@ -293,135 +272,118 @@ extension AuthStatePatterns on AuthState {
 
 /// @nodoc
 
-class _AuthState implements AuthState {
-  const _AuthState(
-      {this.isAuthenticated = false,
+class _TaskState implements TaskState {
+  const _TaskState(
+      {final List<Task> tasks = const [],
       this.isLoading = false,
-      this.isInitialized = false,
       this.errorMessage,
-      this.user});
+      this.isMutating = false})
+      : _tasks = tasks;
 
+  final List<Task> _tasks;
   @override
   @JsonKey()
-  final bool isAuthenticated;
+  List<Task> get tasks {
+    if (_tasks is EqualUnmodifiableListView) return _tasks;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_tasks);
+  }
+
   @override
   @JsonKey()
   final bool isLoading;
   @override
-  @JsonKey()
-  final bool isInitialized;
-  @override
   final String? errorMessage;
   @override
-  final User? user;
+  @JsonKey()
+  final bool isMutating;
 
-  /// Create a copy of AuthState
+  /// Create a copy of TaskState
   /// with the given fields replaced by the non-null parameter values.
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
   @pragma('vm:prefer-inline')
-  _$AuthStateCopyWith<_AuthState> get copyWith =>
-      __$AuthStateCopyWithImpl<_AuthState>(this, _$identity);
+  _$TaskStateCopyWith<_TaskState> get copyWith =>
+      __$TaskStateCopyWithImpl<_TaskState>(this, _$identity);
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _AuthState &&
-            (identical(other.isAuthenticated, isAuthenticated) ||
-                other.isAuthenticated == isAuthenticated) &&
+            other is _TaskState &&
+            const DeepCollectionEquality().equals(other._tasks, _tasks) &&
             (identical(other.isLoading, isLoading) ||
                 other.isLoading == isLoading) &&
-            (identical(other.isInitialized, isInitialized) ||
-                other.isInitialized == isInitialized) &&
             (identical(other.errorMessage, errorMessage) ||
                 other.errorMessage == errorMessage) &&
-            (identical(other.user, user) || other.user == user));
+            (identical(other.isMutating, isMutating) ||
+                other.isMutating == isMutating));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, isAuthenticated, isLoading,
-      isInitialized, errorMessage, user);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(_tasks),
+      isLoading,
+      errorMessage,
+      isMutating);
 
   @override
   String toString() {
-    return 'AuthState(isAuthenticated: $isAuthenticated, isLoading: $isLoading, isInitialized: $isInitialized, errorMessage: $errorMessage, user: $user)';
+    return 'TaskState(tasks: $tasks, isLoading: $isLoading, errorMessage: $errorMessage, isMutating: $isMutating)';
   }
 }
 
 /// @nodoc
-abstract mixin class _$AuthStateCopyWith<$Res>
-    implements $AuthStateCopyWith<$Res> {
-  factory _$AuthStateCopyWith(
-          _AuthState value, $Res Function(_AuthState) _then) =
-      __$AuthStateCopyWithImpl;
+abstract mixin class _$TaskStateCopyWith<$Res>
+    implements $TaskStateCopyWith<$Res> {
+  factory _$TaskStateCopyWith(
+          _TaskState value, $Res Function(_TaskState) _then) =
+      __$TaskStateCopyWithImpl;
   @override
   @useResult
   $Res call(
-      {bool isAuthenticated,
+      {List<Task> tasks,
       bool isLoading,
-      bool isInitialized,
       String? errorMessage,
-      User? user});
-
-  @override
-  $UserCopyWith<$Res>? get user;
+      bool isMutating});
 }
 
 /// @nodoc
-class __$AuthStateCopyWithImpl<$Res> implements _$AuthStateCopyWith<$Res> {
-  __$AuthStateCopyWithImpl(this._self, this._then);
+class __$TaskStateCopyWithImpl<$Res> implements _$TaskStateCopyWith<$Res> {
+  __$TaskStateCopyWithImpl(this._self, this._then);
 
-  final _AuthState _self;
-  final $Res Function(_AuthState) _then;
+  final _TaskState _self;
+  final $Res Function(_TaskState) _then;
 
-  /// Create a copy of AuthState
+  /// Create a copy of TaskState
   /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $Res call({
-    Object? isAuthenticated = null,
+    Object? tasks = null,
     Object? isLoading = null,
-    Object? isInitialized = null,
     Object? errorMessage = freezed,
-    Object? user = freezed,
+    Object? isMutating = null,
   }) {
-    return _then(_AuthState(
-      isAuthenticated: null == isAuthenticated
-          ? _self.isAuthenticated
-          : isAuthenticated // ignore: cast_nullable_to_non_nullable
-              as bool,
+    return _then(_TaskState(
+      tasks: null == tasks
+          ? _self._tasks
+          : tasks // ignore: cast_nullable_to_non_nullable
+              as List<Task>,
       isLoading: null == isLoading
           ? _self.isLoading
           : isLoading // ignore: cast_nullable_to_non_nullable
-              as bool,
-      isInitialized: null == isInitialized
-          ? _self.isInitialized
-          : isInitialized // ignore: cast_nullable_to_non_nullable
               as bool,
       errorMessage: freezed == errorMessage
           ? _self.errorMessage
           : errorMessage // ignore: cast_nullable_to_non_nullable
               as String?,
-      user: freezed == user
-          ? _self.user
-          : user // ignore: cast_nullable_to_non_nullable
-              as User?,
+      isMutating: null == isMutating
+          ? _self.isMutating
+          : isMutating // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
-  }
-
-  /// Create a copy of AuthState
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @pragma('vm:prefer-inline')
-  $UserCopyWith<$Res>? get user {
-    if (_self.user == null) {
-      return null;
-    }
-
-    return $UserCopyWith<$Res>(_self.user!, (value) {
-      return _then(_self.copyWith(user: value));
-    });
   }
 }
 
