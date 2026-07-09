@@ -1,4 +1,3 @@
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../../core/exceptions/task_exception.dart';
 import '../domain/task.dart';
@@ -14,6 +13,41 @@ class TaskNotifier extends _$TaskNotifier {
     // Provider生成時に自動でタスクを読み込む
     // → KanbanPageが表示されたときに自動でAPIを叩く
     Future.microtask(() => loadTasks());
+    // // 確認用の仮データ（確認後に削除する）
+    // Future.microtask(() {
+    //   state = state.copyWith(
+    //     tasks: [
+    //       Task(
+    //         id: 'test-1',
+    //         title: 'デザイン確認',
+    //         status: TaskStatus.todo,
+    //         priority: TaskPriority.high,
+    //         userId: 'test',
+    //         createdAt: DateTime.now(),
+    //         updatedAt: DateTime.now(),
+    //         dueDate: DateTime.now().add(const Duration(days: 1)),
+    //       ),
+    //       Task(
+    //         id: 'test-2',
+    //         title: 'API実装',
+    //         status: TaskStatus.inProgress,
+    //         priority: TaskPriority.medium,
+    //         userId: 'test',
+    //         createdAt: DateTime.now(),
+    //         updatedAt: DateTime.now(),
+    //       ),
+    //       Task(
+    //         id: 'test-3',
+    //         title: 'テスト作成',
+    //         status: TaskStatus.done,
+    //         priority: TaskPriority.low,
+    //         userId: 'test',
+    //         createdAt: DateTime.now(),
+    //         updatedAt: DateTime.now(),
+    //       ),
+    //     ],
+    //   );
+    // });
     return TaskState.initial();
   }
 

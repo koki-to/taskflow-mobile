@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:taskflow_mobile/features/task/domain/task.dart';
 import 'package:taskflow_mobile/features/task/presentation/task_notifier.dart';
+import 'package:taskflow_mobile/features/task/presentation/widget/kanban_column.dart';
+import 'package:taskflow_mobile/features/task/presentation/widget/task_card.dart';
 import '../../../features/auth/presentation/auth_notifier.dart';
 
 class KanbanPage extends ConsumerWidget {
@@ -97,179 +99,98 @@ class KanbanPage extends ConsumerWidget {
       );
     }
 
-    // タスクが0件の状態
-    if (tasks.isEmpty) {
-      return Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              Icons.task_alt,
-              size: 64,
-              color: Theme.of(context).colorScheme.outline,
-            ),
-            const SizedBox(height: 16),
-            Text(
-              'タスクがありません',
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    color: Theme.of(context).colorScheme.outline,
-                  ),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              '右下の + ボタンでタスクを追加できます',
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: Theme.of(context).colorScheme.outline,
-                  ),
-            ),
-          ],
-        ),
-      );
-    }
-
-    // タスク一覧（ステータスごとに表示）
-    return ListView(
-      padding: const EdgeInsets.all(16),
-      children: [
-        _buildStatusSection(
-          context: context,
-          ref: ref,
-          title: '📋 未着手',
-          tasks: tasks
-              .where(
-                (t) => t.status == TaskStatus.todo,
-              )
-              .toList(),
-        ),
-        const SizedBox(height: 16),
-        _buildStatusSection(
-          context: context,
-          ref: ref,
-          title: '🔄 進行中',
-          tasks: tasks
-              .where(
-                (t) => t.status == TaskStatus.inProgress,
-              )
-              .toList(),
-        ),
-        const SizedBox(height: 16),
-        _buildStatusSection(
-          context: context,
-          ref: ref,
-          title: '✅ 完了',
-          tasks: tasks
-              .where(
-                (t) => t.status == TaskStatus.done,
-              )
-              .toList(),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildStatusSection({
-    required BuildContext context,
-    required WidgetRef ref,
-    required String title,
-    required List<Task> tasks,
-  }) {
-    return Column(
+    // カンバンボード（横スクロール）
+    return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          children: [
-            Text(
-              title,
-              style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
-            ),
-            const SizedBox(width: 8),
-            Container(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 8,
-                vertical: 2,
-              ),
-              decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.surfaceContainerHighest,
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Text(
-                '${tasks.length}',
-                style: Theme.of(context).textTheme.labelSmall,
-              ),
-            ),
-          ],
-        ),
-        const SizedBox(height: 8),
-        if (tasks.isEmpty)
-          Container(
-            width: double.infinity,
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              border: Border.all(
-                color: Theme.of(context).colorScheme.outlineVariant,
-              ),
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: Text(
-              'タスクなし',
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: Theme.of(context).colorScheme.outline,
-                  ),
-              textAlign: TextAlign.center,
-            ),
-          )
-        else
-          ...tasks.map(
-            (task) => _buildTaskCard(
-              context: context,
-              ref: ref,
-              task: task,
-            ),
+      children: TaskStatus.values.map((status) {
+        final columnTasks = tasks.where((t) => t.status == status).toList();
+
+        return Expanded(
+          child: _KanbanColumn(
+            status: status,
+            tasks: columnTasks,
+            ref: ref,
           ),
-      ],
+        );
+      }).toList(),
     );
   }
+}
 
-  Widget _buildTaskCard({
-    required BuildContext context,
-    required WidgetRef ref,
-    required Task task,
-  }) {
-    final priorityColor = switch (task.priority) {
-      TaskPriority.high => Colors.red,
-      TaskPriority.medium => Colors.orange,
-      TaskPriority.low => Colors.green,
-    };
+// カンバンの1カラム
+class _KanbanColumn extends StatelessWidget {
+  final TaskStatus status;
+  final List<Task> tasks;
+  final WidgetRef ref;
 
-    return Card(
-      margin: const EdgeInsets.only(bottom: 8),
-      child: ListTile(
-        title: Text(task.title),
-        subtitle: task.description != null
-            ? Text(
-                task.description!,
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-              )
-            : null,
-        leading: Container(
-          width: 4,
-          height: 40,
-          decoration: BoxDecoration(
-            color: priorityColor,
-            borderRadius: BorderRadius.circular(2),
+  const _KanbanColumn({
+    required this.status,
+    required this.tasks,
+    required this.ref,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.all(8),
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.surfaceContainerLow,
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          // カラムヘッダー
+          KanbanColumnHeader(
+            status: status,
+            taskCount: tasks.length,
           ),
-        ),
-        trailing: IconButton(
-          icon: const Icon(Icons.delete_outline),
-          color: Theme.of(context).colorScheme.error,
-          onPressed: () {
-            ref.read(taskProvider.notifier).deleteTask(task.id);
-          },
-        ),
+
+          const Divider(height: 1),
+
+          // タスクリスト
+          Expanded(
+            child: tasks.isEmpty
+                ? const KanbanEmptyColumn()
+                : ListView.builder(
+                    padding: const EdgeInsets.all(8),
+                    itemCount: tasks.length,
+                    itemBuilder: (context, index) {
+                      return TaskCard(task: tasks[index]);
+                    },
+                  ),
+          ),
+
+          // ステータス変更ボタン群
+          // → D&Dの代わりにボタンでステータスを変更する
+          _StatusChangeButtons(
+            status: status,
+            ref: ref,
+            tasks: tasks,
+          ),
+        ],
       ),
     );
+  }
+}
+
+// ステータス変更ボタン（D&Dの代替）
+// → 現場では小規模アプリではD&Dより
+//   ボタンでのステータス変更の方がシンプルで保守しやすい
+class _StatusChangeButtons extends StatelessWidget {
+  final TaskStatus status;
+  final List<Task> tasks;
+  final WidgetRef ref;
+
+  const _StatusChangeButtons({
+    required this.status,
+    required this.tasks,
+    required this.ref,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return const SizedBox.shrink();
+    // Day8でタスク詳細画面でステータス変更を実装する
   }
 }
